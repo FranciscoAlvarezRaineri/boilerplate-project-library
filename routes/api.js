@@ -40,7 +40,7 @@ module.exports = function (app) {
 
     .delete(function (req, res) {
       //if successful response will be 'complete delete successful'
-      Books.delete({}, (err) => {
+      Book.deleteMany({}, (err) => {
         if (err) {
           return res.send({ error: "db failure" });
         }
@@ -54,7 +54,7 @@ module.exports = function (app) {
       let bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
       Book.findById(bookid, (err, book) => {
-        if (err) {
+        if (!book) {
           return res.send("no book exists");
         }
         res.send(book);
@@ -66,7 +66,7 @@ module.exports = function (app) {
       let comment = req.body.comment;
       if (!comment) return res.send("missing required field comment");
       Book.findById(bookid, (err, book) => {
-        if (err) {
+        if (!book) {
           return res.send("no book exists");
         }
         book.comments.push(comment);
@@ -78,22 +78,17 @@ module.exports = function (app) {
         });
       });
 
-      /*    Book.findByIdAndUpdate(
-        bookid,
-        { $push: { comments: comment } },
-        (err, book) => {
-          if (err) {
-            return res.send("no book exists");
-          }
-          console.log(book);
-          res.send(book);
-        }
-      );*/
       //json res format same as .get
     })
 
     .delete(function (req, res) {
       let bookid = req.params.id;
       //if successful response will be 'delete successful'
+      Book.findByIdAndRemove(bookid, function (err, book) {
+        if (!book) {
+          return res.send("no book exists");
+        }
+        res.send("delete successful");
+      });
     });
 };

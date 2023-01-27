@@ -18,7 +18,7 @@ suite("Functional Tests", function () {
    * ----[EXAMPLE TEST]----
    * Each test should completely test the response of the API end-point including response status code!
    */
-  test("#example Test GET /api/books", function (done) {
+  /*test("#example Test GET /api/books", function (done) {
     chai
       .request(server)
       .get("/api/books")
@@ -42,7 +42,7 @@ suite("Functional Tests", function () {
         );
         done();
       });
-  });
+  });*/
   /*
    * ----[END of EXAMPLE TEST]----
    */
@@ -187,14 +187,28 @@ suite("Functional Tests", function () {
       }
     );
 
-    /* suite("DELETE /api/books/[id] => delete book object id", function () {
+    suite("DELETE /api/books/[id] => delete book object id", function () {
       test("Test DELETE /api/books/[id] with valid id in db", function (done) {
-        done();
+        chai
+          .request(server)
+          .delete(`/api/books/${_id}`)
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "delete successful");
+            done();
+          });
       });
 
       test("Test DELETE /api/books/[id] with  id not in db", function (done) {
-        done();
+        chai
+          .request(server)
+          .delete(`/api/books/111111111111`)
+          .end(function (err, res) {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, "no book exists");
+            done();
+          });
       });
-    });*/
+    });
   });
 });

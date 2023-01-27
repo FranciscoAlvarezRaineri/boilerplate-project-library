@@ -19,7 +19,7 @@ const book = new mongoose.Schema(
 );
 
 book.virtual("commentcount").get(function () {
-  return this.comments.length;
+  return this.comments?.length || 0;
 });
 
 const Book = mongoose.model("book", book);
